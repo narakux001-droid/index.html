@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+
+<title>Naraku Beta</title>
+
+<meta http-equiv="Content-Security-Policy"
+content="
+default-src 'self' https: data:;
+img-src * data:;
+style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+font-src https://fonts.gstatic.com;
+script-src 'self' 'unsafe-inline';
+frame-ancestors 'none';
+">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Montserrat',sans-serif;
+}
+
+html{
+scroll-behavior:smooth;
+}
+
+body{
+background:#050505;
+color:white;
+overflow:hidden;
+}
+
+/* BACKGROUND */
+
+body::before{
+content:'';
+position:fixed;
+inset:0;
+
+background:
+radial-gradient(circle at top,#ffcc0017,transparent 35%),
+radial-gradient(circle at bottom,#ff880015,transparent 40%),
+#050505;
+
+z-index:-2;
+}
+
+body::after{
+content:'';
+
+position:fixed;
+inset:0;
+
+background-image:
+linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+
+background-size:40px 40px;
+opacity:.15;
+z-index:-1;
+}
+
+/* HEADER */
+
+.header{
+
+position:fixed;
+top:0;
+left:0;
+right:0;
+
+height:95px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+padding:0 18px;
+
+background:rgba(5,5,5,.88);
+
+backdrop-filter:blur(20px);
+
+border-bottom:1px solid rgba(255,255,255,.05);
+
+z-index:999;
+
+}
+
+.header-content{
+
+width:100%;
+max-width:1400px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+}
+
+.brand{
+
+display:flex;
+align-items:center;
+gap:14px;
+
+}
+
+.logo-img{
+
+width:65px;
+height:65px;
+
+border-radius:18px;
+
+border:1px solid #ffd700;
+
+box-shadow:
+0 0 15px #ffd700,
+0 0 30px #ffcc00;
+
+}
+
+.logo-title{
+
+font-size:28px;
+font-weight:800;
+
+}
+
+.logo-title span{
+
+color:#ffd700;
+
+text-shadow:
+0 0 10px #ffd700,
+0 0 20px #ffcc00;
+
+}
+
+.logo-sub{
+
+font-size:12px;
+letter-spacing:3px;
+
+margin-top:5px;
+
+color:#888;
+
+}
+
+.discord-btn{
+
+width:58px;
+height:58px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:18px;
+
+background:#111;
+
+border:1px solid #222;
+
+transition:.3s;
+
+}
+
+.discord-btn:hover{
+
+transform:scale(1.08);
+
+box-shadow:
+0 0 20px #5865F2;
+
+}
+
+.discord-btn img{
+
+width:35px;
+height:35px;
+
+}
+
+/* MAIN */
+
+.main{
+
+height:100vh;
+
+overflow-y:auto;
+
+padding:
+120px 20px
+30px;
+
+}
+
+.container{
+
+max-width:1400px;
+
+margin:auto;
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(320px,1fr));
+
+gap:25px;
+
+}
+
+.card{
+
+background:
+linear-gradient(
+180deg,
+#111,
+#090909
+);
+
+border-radius:28px;
+
+overflow:hidden;
+
+border:1px solid #222;
+
+transition:.3s;
+
+box-shadow:
+0 0 20px black,
+0 0 40px #ffb30010;
+
+}
+
+.card:hover{
+
+transform:translateY(-5px);
+
+box-shadow:
+0 0 25px black,
+0 0 50px #ffb30035;
+
+}
+
+.banner{
+
+width:100%;
+height:190px;
+
+object-fit:cover;
+
+}
+
+.content{
+
+padding:22px;
+
+}
+
+.title{
+
+font-size:25px;
+font-weight:800;
+
+margin-bottom:14px;
+
+}
+
+.desc{
+
+font-size:14px;
+line-height:1.8;
+
+color:#bdbdbd;
+
+margin-bottom:18px;
+
+min-height:95px;
+
+}
+
+.tag{
+
+display:inline-block;
+
+padding:8px 14px;
+
+background:#121212;
+
+border-radius:14px;
+
+border:1px solid #252525;
+
+font-size:13px;
+
+color:#ffd700;
+
+margin-bottom:18px;
+
+}
+
+.btn{
+
+width:100%;
+
+padding:16px;
+
+border:none;
+
+border-radius:18px;
+
+font-size:18px;
+font-weight:700;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+145deg,
+#2d2d2d,
+#1a1a1a
+);
+
+color:white;
+
+transition:.3s;
+
+}
+
+.btn:hover{
+
+transform:scale(1.02);
+
+background:
+linear-gradient(
+145deg,
+#ffd700,
+#ffb300
+);
+
+color:black;
+
+}
+
+/* TOAST */
+
+.toast{
+
+position:fixed;
+
+bottom:-100px;
+left:50%;
+
+transform:translateX(-50%);
+
+padding:16px 30px;
+
+border-radius:18px;
+
+background:rgba(20,20,20,.95);
+
+border:1px solid rgba(255,215,0,.3);
+
+color:#ffd700;
+
+font-weight:600;
+
+backdrop-filter:blur(15px);
+
+box-shadow:
+0 0 20px #ffcc0030;
+
+transition:.5s;
+
+z-index:9999;
+
+}
+
+.toast.show{
+
+bottom:30px;
+
+}
+
+/* FOOTER */
+
+.footer{
+
+margin-top:35px;
+
+text-align:center;
+
+color:#666;
+
+padding-bottom:40px;
+
+}
+
+@media(max-width:700px){
+
+.logo-title{
+font-size:22px;
+}
+
+.logo-img{
+width:55px;
+height:55px;
+}
+
+}
+
+@media(min-width:1200px){
+
+.container{
+grid-template-columns:repeat(3,1fr);
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="header">
+
+<div class="header-content">
+
+<div class="brand">
+
+<img src="https://files.catbox.moe/q4bqjt.png" class="logo-img">
+
+<div>
+
+<div class="logo-title">
+NARAKU <span>BETA</span>
+</div>
+
+<div class="logo-sub">
+SCRIPT HUB
+</div>
+
+</div>
+</div>
+
+<a href="https://discord.gg/mYTUqk3Hu"
+target="_blank"
+class="discord-btn">
+
+<img src="https://files.catbox.moe/w2ds4l.jpg">
+
+</a>
+
+</div>
+</div>
+
+<div class="main">
+
+<div class="container">
+
+<!-- CARD 1 -->
+
+<div class="card">
+
+<img src="https://files.catbox.moe/v9hww3.png" class="banner">
+
+<div class="content">
+
+<div class="title">
+Plugin StudioLite
+</div>
+
+<div class="desc">
+
+Fitur development lengkap seperti Terrain Editor, Archimedes Tools, Toolbox, Fly System, Anti AFK, serta Speed Control untuk mempercepat proses pembuatan project.
+
+</div>
+
+<div class="tag">
+Free Script • Naraku Beta
+</div>
+
+<button class="btn"
+onclick="copyScript(`loadstring(game:HttpGet('https://raw.githubusercontent.com/narakux001-droid/narakubeta/refs/heads/main/script(uinew).lua'))()`)">
+
+GET SCRIPT
+
+</button>
+
+</div>
+</div>
+
+<!-- CARD 2 -->
+
+<div class="card">
+
+<img src="https://files.catbox.moe/v9hww3.png" class="banner">
+
+<div class="content">
+
+<div class="title">
+Toolbox
+</div>
+
+<div class="desc">
+Plugin Toolbox untuk membantu build, editing map, serta pengelolaan asset StudioLite secara lebih cepat.
+</div>
+
+<div class="tag">
+Free Script • Naraku Beta
+</div>
+
+<button class="btn"
+onclick="copyScript(`loadstring(game:HttpGet('https://raw.githubusercontent.com/narakux001-droid/narakubeta/refs/heads/main/script2.lua'))()`)">
+
+GET SCRIPT
+
+</button>
+
+</div>
+</div>
+
+<!-- CARD 3 -->
+
+<div class="card">
+
+<img src="https://files.catbox.moe/v9hww3.png" class="banner">
+
+<div class="content">
+
+<div class="title">
+Archimedes
+</div>
+
+<div class="desc">
+Plugin untuk modeling, scaling object, serta mempercepat pembangunan map.
+</div>
+
+<div class="tag">
+Free Script • Naraku Beta
+</div>
+
+<button class="btn"
+onclick="copyScript(`loadstring(game:HttpGet('https://pastefy.app/Fp37di5c/raw'))()`)">
+
+GET SCRIPT
+
+</button>
+
+</div>
+</div>
+
+</div>
+
+<div class="footer">
+© Naraku Beta Script Hub
+</div>
+
+</div>
+
+<div id="toast" class="toast">
+Copy script sukses
+</div>
+
+<script>
+
+function copyScript(script){
+
+navigator.clipboard.writeText(script);
+
+const toast=document.getElementById("toast");
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+toast.classList.remove("show");
+},3000);
+
+}
+
+document.addEventListener(
+"contextmenu",
+e=>e.preventDefault()
+);
+
+</script>
+
+</body>
+</html>
